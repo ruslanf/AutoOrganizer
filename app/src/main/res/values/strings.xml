@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">AutoOrganizer</string>
+
+    <!-- Bottom menu -->
+    <string name="auto_state_screen">Auto state</string>
+    <string name="profile_screen">Profile</string>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/auto_state_screen">
+
+    <!--<fragment
+        android:id="@+id/auto_state_screen"
+        android:name="org.bz.autoorganizer.ui.autostate.AutoStateFragment"
+        android:label="@string/auto_state_screen"
+        tools:layout="@layout/fragment_auto_state">
+
+       &lt;!&ndash; <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />&ndash;&gt;
+    </fragment>-->
+    <!--<fragment
+        android:id="@+id/ProfileFragment"
+        android:name=""
+        android:label="@string/profile_screen"
+        tools:layout="@layout/fragment_profile">
+
+        &lt;!&ndash;<action
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />&ndash;&gt;
+    </fragment>-->
+</navigation>

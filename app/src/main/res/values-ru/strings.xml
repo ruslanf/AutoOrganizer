@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Bottom menu -->
+    <string name="auto_state_screen">Состояние авто</string>
+    <string name="profile_screen">Профиль</string>
+</resources>
