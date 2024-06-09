@@ -7,5 +7,10 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { AutoStateViewModel() }
-    viewModel { ProfileViewModel() }
+    viewModel {
+        ProfileViewModel(
+            dataBase = get(),
+            networkBase = get()
+        )
+    }
 }

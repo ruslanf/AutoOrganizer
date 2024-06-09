@@ -71,6 +71,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.constraintlayout)
+//    implementation(libs.androidx.compose.constraintlayout)
+
     // Splash API
     implementation(libs.androidx.splash)
     // Navigation Jetpack
@@ -88,7 +91,6 @@ dependencies {
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit.ktx)
-//    androidTestImplementation(libs.androidx.junit.ext)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
