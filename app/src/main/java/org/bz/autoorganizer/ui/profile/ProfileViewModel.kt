@@ -11,8 +11,10 @@ import kotlinx.coroutines.launch
 import okhttp3.internal.notify
 import org.bz.autoorganizer.data.http.Left
 import org.bz.autoorganizer.data.http.Right
+import org.bz.autoorganizer.data.models.Auto
 import org.bz.autoorganizer.data.repository.DataBase
 import org.bz.autoorganizer.data.repository.NetworkBase
+import org.koin.core.KoinApplication.Companion.init
 import timber.log.Timber
 
 class ProfileViewModel(
@@ -27,9 +29,17 @@ class ProfileViewModel(
         get() = _errors
             .asSharedFlow()
 
+    val autoManufacturers: Flow<List<String>>
+        get() = _autoManufacturers
+            .asSharedFlow()
+
+    private val _autoManufacturers = MutableSharedFlow<List<String>>()
+
     private val _progress = MutableStateFlow(0)
     private val _errors = MutableSharedFlow<Exception>()
     private var counter = 0
+
+    private var manufacturers = mutableListOf<String>()
 
     init {
         viewModelScope.launch {
@@ -44,7 +54,13 @@ class ProfileViewModel(
         when (val r = networkBase.getAutoModels()) {
             is Left -> _errors.emit(r.value)
             is Right -> {
-                r.value.forEach { println(it) }
+                val autos = r.value
+                autos.map { auto ->
+                    auto.name?.also { name ->
+                        manufacturers.add(name)
+                    }
+                }
+                _autoManufacturers.emit(manufacturers)
             }
         }
 

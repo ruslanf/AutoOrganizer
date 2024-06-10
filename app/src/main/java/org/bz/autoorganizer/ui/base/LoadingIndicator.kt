@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import kotlinx.coroutines.flow.Flow
@@ -33,4 +34,18 @@ fun LoadingIndicator(
             trackColor = MaterialTheme.colorScheme.surface
         )
     }
+}
+
+@Composable
+fun LoadingIndicator(
+    progress: Flow<Int>,
+    modifier: Modifier = Modifier
+) {
+    val count by progress.collectAsState(initial = 0)
+
+    if (count > 0) CircularProgressIndicator(
+        modifier = modifier.width(32.dp),
+        color = MaterialTheme.colorScheme.secondary,
+        trackColor = MaterialTheme.colorScheme.surface
+    )
 }
