@@ -139,15 +139,25 @@ fun ProfileScreen() {
                     DropdownMenuItem(
                         text = { Text(text = manufacturer) },
                         onClick = {
+                            selectedManufacturer = manufacturer
+                            expandedManufacturerMenu = false
                             Toast.makeText(
                                 context,
                                 "Auto manufacturer's name => $manufacturer",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                    )
+                    ) /*{
+                        Text(text = manufacturer)
+                    }*/
                 }
-                Box(
+
+            }
+        }
+    }
+}
+
+/*Box(
                     modifier = Modifier
                         .size(width = 100.dp, height = 300.dp)
                 ) {
@@ -155,8 +165,4 @@ fun ProfileScreen() {
                     LazyColumn {
 
                     }
-                }
-            }
-        }
-    }
-}
+                }*/
