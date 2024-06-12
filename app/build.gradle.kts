@@ -70,9 +70,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.constraintlayout)
-//    implementation(libs.androidx.compose.constraintlayout)
 
     // Splash API
     implementation(libs.androidx.splash)
