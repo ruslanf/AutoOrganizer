@@ -2,6 +2,7 @@ package org.bz.autoorganizer.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +44,7 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            launch { fetchAutoModels() }
+            launch(Dispatchers.IO) { fetchAutoModels() }
         }
     }
 

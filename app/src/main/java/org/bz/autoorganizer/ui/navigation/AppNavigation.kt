@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.bz.autoorganizer.ui.autostate.AutoStateScreen
 import org.bz.autoorganizer.ui.profile.ProfileScreen
+import org.bz.autoorganizer.ui.profile.auto.AddNewAutoScreen
 
 @Composable
 fun AppNavigationHost(
@@ -24,7 +25,10 @@ fun AppNavigationHost(
             AutoStateScreen()
         }
         composable(Screen.PROFILE.route) {
-            ProfileScreen()
+            ProfileScreen(navController = navController)
+        }
+        composable(Screen.ADD_NEW_AUTO.route) {
+            AddNewAutoScreen()
         }
     }
 }

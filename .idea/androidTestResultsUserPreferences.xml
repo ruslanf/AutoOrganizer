@@ -29,6 +29,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1012601117">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="HUAWEI STK-LX1" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-997952013">
           <value>
             <AndroidTestResultsTableState>
@@ -37,6 +50,33 @@
                   <entry key="Duration" value="90" />
                   <entry key="Mi_Note_10_API_30_11_" value="120" />
                   <entry key="Pixel_6_Pro_API_33_13_" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-421759177">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="209" />
+                  <entry key="HUAWEI STK-LX1" value="120" />
+                  <entry key="Pixel_6_Pro_API_33_13_" value="238" />
+                  <entry key="Tests" value="479" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-167847891">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="HUAWEI STK-LX1" value="120" />
                   <entry key="Tests" value="360" />
                 </map>
               </option>

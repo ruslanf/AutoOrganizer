@@ -18,11 +18,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import org.bz.autoorganizer.root.NavigationTags
 import org.bz.autoorganizer.ui.navigation.AppNavigationHost
 import org.bz.autoorganizer.ui.navigation.NavigationItem
 import org.bz.autoorganizer.ui.theme.AutoOrganizerTheme
@@ -89,12 +91,10 @@ fun App(navigationItems: List<NavigationItem>) {
                 }
             }
         ) { innerPadding ->
-            /*Greeting(
-                name = "Android",
-                modifier = Modifier.padding(innerPadding)
-            )*/
             AppNavigationHost(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .testTag(NavigationTags.APP_NAVIGATION_HOST),
                 navController = navController,
                 startDestination = NavigationItem.AutoState
             )
