@@ -19,6 +19,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        manifestPlaceholders["YANDEX_CLIENT_ID"] = "bc30d880f63142c49d46311e9cbd2200"
     }
 
     buildTypes {
@@ -51,7 +52,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -119,4 +120,8 @@ dependencies {
 
     // Timber
     implementation(libs.timber.logger)
+
+    // Yandex
+    // OAuth SDK
+    implementation(libs.yandex.auth.sdk)
 }
