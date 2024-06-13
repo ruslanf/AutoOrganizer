@@ -7,4 +7,5 @@ object NavigationTags {
     const val ADD_NEW_AUTO_SCREEN = "NavigationTags:ADD_NEW_AUTO_SCREEN"
 
     const val ADD_NEW_AUTO_BUTTON = "NavigationTags:ADD_NEW_AUTO_BUTTON"
+    const val YANDEX_OAUTH_BUTTON = "NavigationTags:YANDEX_OAUTH_BUTTON"
 }

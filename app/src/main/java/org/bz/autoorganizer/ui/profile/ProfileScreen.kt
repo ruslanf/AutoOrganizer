@@ -50,21 +50,6 @@ fun ProfileScreen(
     val viewModel: ProfileViewModel = koinViewModel()
     val scope = rememberCoroutineScope()
 
-    // List of Auto manufacturers
-    val manufacturers by viewModel.autoManufacturers.collectAsState(initial = emptyList())
-    // List of Auto models name
-    val models = mutableListOf<String>()
-
-    var expandedManufacturerMenu by remember { mutableStateOf(false) }
-    var selectedManufacturer by remember { mutableStateOf("") }
-    var selectedManufacturerSize by remember { mutableStateOf(Size.Zero) }
-
-    var expandedModelsMenu by remember { mutableStateOf(false) }
-    var selectedModel by remember { mutableStateOf("") }
-    var selectedModelSize by remember { mutableStateOf(Size.Zero) }
-
-    var isModelMenuEnabled by remember { mutableStateOf(false) }
-
     AutoOrganizerTheme {
         Row(
             modifier = Modifier
@@ -73,9 +58,9 @@ fun ProfileScreen(
                 .testTag(NavigationTags.PROFILE_SCREEN),
             horizontalArrangement = Arrangement.Center
         ) {
-            ButtonOpenAddNewAutoScreen(
-                navController = navController
-            )
+            ButtonOpenAddNewAutoScreen(navController = navController)
+
+            ButtonYandexAuthScreen(navController = navController)
         }
         /*ConstraintLayout(
             modifier = Modifier.fillMaxSize()
@@ -113,59 +98,7 @@ fun ProfileScreen(
                         )
                     }
             ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .onGloballyPositioned { layoutCoordinates ->
-                            selectedManufacturerSize = layoutCoordinates.size.toSize()
-                        },
-                    value = selectedManufacturer,
-                    onValueChange = { selectedManufacturer = it },
-                    label = {
-                        Text(stringResource(id = R.string.label_manufacturer_name))
-                    },
-                    trailingIcon = {
-                        IconButton(
-                            onClick = { expandedManufacturerMenu = !expandedManufacturerMenu }
-                        ) {
-                            Icon(
-                                imageVector = if (expandedManufacturerMenu)
-                                    Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                                contentDescription = "Auto"
-                            )
-                        }
-                    },
-                    singleLine = true
-                )
-                AutoModelField(isEnabled = isModelMenuEnabled)
-            }
 
-            DropdownMenu(
-                expanded = expandedManufacturerMenu,
-                onDismissRequest = { expandedManufacturerMenu = false },
-                modifier = Modifier
-                    .width(
-                        with(LocalDensity.current) {
-                            selectedManufacturerSize.width.toDp()
-                        }
-                    )
-            ) {
-                manufacturers.forEach { manufacturer ->
-                    DropdownMenuItem(
-                        text = { Text(text = manufacturer) },
-                        onClick = {
-                            selectedManufacturer = manufacturer
-                            expandedManufacturerMenu = false
-                            isModelMenuEnabled = true
-                            //TODO remove later below line
-                            Toast.makeText(
-                                context,
-                                "Auto manufacturer's name => $manufacturer",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    )
-                }
             }
         }*/
     }
@@ -177,6 +110,7 @@ fun ButtonOpenAddNewAutoScreen(
 ) {
     Button(
         modifier = Modifier
+            .padding(8.dp)
             .testTag(NavigationTags.ADD_NEW_AUTO_BUTTON),
         onClick = {
             navController.navigate(Screen.ADD_NEW_AUTO.route)
@@ -193,38 +127,23 @@ fun ButtonOpenAddNewAutoScreen(
 }
 
 @Composable
-fun AutoModelField(
-    isEnabled: Boolean = false,
-    expandedModelsMenu: Boolean = false,
-    selectedModel: String = "",
-    selectedModelSize: Size = Size.Zero
+fun ButtonYandexAuthScreen(
+    navController: NavController
 ) {
-    var modelsMenu by remember(expandedModelsMenu) { mutableStateOf(expandedModelsMenu) }
-    var model by remember(selectedModel) { mutableStateOf(selectedModel) }
-    var modelSize by remember(selectedModelSize) { mutableStateOf(selectedModelSize) }
-    OutlinedTextField(
+    Button(
         modifier = Modifier
-            .fillMaxWidth()
-            .onGloballyPositioned { layoutCoordinates ->
-                modelSize = layoutCoordinates.size.toSize()
-            },
-        value = selectedModel,
-        onValueChange = { model = it },
-        label = {
-            Text(stringResource(id = R.string.label_model_name))
+            .padding(8.dp)
+            .testTag(NavigationTags.YANDEX_OAUTH_BUTTON),
+        onClick = {
+            navController.navigate(Screen.YANDEX_OAUTH.route)
         },
-        trailingIcon = {
-            IconButton(
-                onClick = { modelsMenu = !modelsMenu }
-            ) {
-                Icon(
-                    imageVector = if (modelsMenu)
-                        Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                    contentDescription = "Auto model"
-                )
-            }
-        },
-        enabled = isEnabled,
-        singleLine = true
-    )
+        enabled = true,
+        border = BorderStroke(
+            width = 1.dp,
+            brush = SolidColor(Color.Blue)
+        ),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Text(text = stringResource(id = R.string.button_yandex_oauth_screen))
+    }
 }

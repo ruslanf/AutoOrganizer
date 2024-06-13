@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import org.bz.autoorganizer.ui.autostate.AutoStateScreen
 import org.bz.autoorganizer.ui.profile.ProfileScreen
 import org.bz.autoorganizer.ui.profile.auto.AddNewAutoScreen
+import org.bz.autoorganizer.ui.profile.yandex.YandexOAuthScreen
 
 @Composable
 fun AppNavigationHost(
@@ -29,6 +30,9 @@ fun AppNavigationHost(
         }
         composable(Screen.ADD_NEW_AUTO.route) {
             AddNewAutoScreen()
+        }
+        composable(Screen.YANDEX_OAUTH.route) {
+            YandexOAuthScreen()
         }
     }
 }
