@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
@@ -36,7 +37,8 @@ fun AutoModelField(
             .fillMaxWidth()
             .onGloballyPositioned { layoutCoordinates ->
                 modelSize = layoutCoordinates.size.toSize()
-            },
+            }
+            .alpha(if (isEnabled) 1f else 0f),
         value = selectedModel,
         onValueChange = { model = it },
         label = {
