@@ -3,17 +3,10 @@ package org.bz.autoorganizer.ui.profile.auto
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,25 +16,24 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import org.bz.autoorganizer.R
 import org.bz.autoorganizer.root.NavigationTags
 import org.bz.autoorganizer.ui.base.LoadingIndicator
 import org.bz.autoorganizer.ui.theme.AutoOrganizerTheme
 import org.koin.androidx.compose.koinViewModel
+import timber.log.Timber
 
 @Preview
 @Composable
@@ -51,9 +43,9 @@ fun AddNewAutoScreen() {
     val scope = rememberCoroutineScope()
 
     // List of Auto manufacturers
-    val manufacturers by viewModel.autoManufacturers.collectAsState(initial = emptyList())
+    val manufacturers by viewModel.watchAutoManufacturers.collectAsState(initial = emptyList())
     // List of Auto models name
-    val models = mutableListOf<String>()
+    val models by viewModel.watchAutoModels.collectAsState(initial = emptyList())
 
     var expandedManufacturerMenu by remember { mutableStateOf(false) }
     var selectedManufacturer by remember { mutableStateOf("") }
@@ -66,10 +58,18 @@ fun AddNewAutoScreen() {
     var isModelMenuEnabled by remember { mutableStateOf(false) }
 
     val progress = remember { mutableIntStateOf(0) }
+    val manufacturer = remember { mutableStateOf("") }
 
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = viewModel.progress) {
         scope.launch {
-            viewModel.progress.collect { progress.intValue = it }
+            launch {
+                viewModel.progress.collect { progress.intValue = it }
+            }
+            launch {
+                viewModel.watchAutoModels.collect { models ->
+                    models.forEach { Timber.i("Model => ${it.name}") }
+                }
+            }
         }
     }
 
@@ -85,59 +85,88 @@ fun AddNewAutoScreen() {
                 progress = progress.intValue
             )
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { layoutCoordinates ->
-                        selectedManufacturerSize = layoutCoordinates.size.toSize()
-                    }
-                    .alpha(if (progress.intValue > 0) 0f else 1f),
-                value = selectedManufacturer,
-                onValueChange = { selectedManufacturer = it },
-                label = {
-                    Text(stringResource(id = R.string.label_manufacturer_name))
-                },
-                trailingIcon = {
-                    IconButton(
-                        onClick = { expandedManufacturerMenu = !expandedManufacturerMenu }
-                    ) {
-                        Icon(
-                            imageVector = if (expandedManufacturerMenu)
-                                Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                            contentDescription = "Auto"
-                        )
+            AutoModelField(
+                isEnabled = true,
+                expandedMenu = expandedManufacturerMenu,
+                selectedField = selectedManufacturer,
+                fieldSize = selectedManufacturerSize,
+                label = R.string.label_manufacturer_name,
+                onExpandedMenu = {
+                    expandedManufacturerMenu = it
+                    scope.launch {
+                        selectedModel = ""
+                        launch { viewModel.doClearModels() }
                     }
                 },
-                singleLine = true
+                onModelSelected = { selectedManufacturer = it },
+                onFieldSize = { selectedManufacturerSize = it }
             )
-            AutoModelField(isEnabled = isModelMenuEnabled)
-        }
+            DropdownMenu(
+                expanded = expandedManufacturerMenu,
+                onDismissRequest = { expandedManufacturerMenu = false },
+                modifier = Modifier
+                    .width(
+                        with(LocalDensity.current) {
+                            selectedManufacturerSize.width.toDp()
+                        }
+                    )
+            ) {
+                manufacturers.forEach { m ->
+                    DropdownMenuItem(
+                        text = { Text(text = m) },
+                        onClick = {
+                            manufacturer.value = m
+                            selectedManufacturer = manufacturer.value
+                            expandedManufacturerMenu = false
+                            isModelMenuEnabled = true
+                            scope.launch {
+                                launch {
+                                    viewModel.getModelByManufacturer(manufacturer.value)
+                                }
+                            }
+                        }
+                    )
+                }
+            }
 
-        DropdownMenu(
-            expanded = expandedManufacturerMenu,
-            onDismissRequest = { expandedManufacturerMenu = false },
-            modifier = Modifier
-                .width(
-                    with(LocalDensity.current) {
-                        selectedManufacturerSize.width.toDp()
-                    }
-                )
-        ) {
-            manufacturers.forEach { manufacturer ->
-                DropdownMenuItem(
-                    text = { Text(text = manufacturer) },
-                    onClick = {
-                        selectedManufacturer = manufacturer
-                        expandedManufacturerMenu = false
-                        isModelMenuEnabled = true
-                        //TODO remove later below line
-                        Toast.makeText(
-                            context,
-                            "Auto manufacturer's name => $manufacturer",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                )
+            AutoModelField(
+                isEnabled = isModelMenuEnabled,
+                expandedMenu = expandedModelsMenu,
+                selectedField = selectedModel,
+                fieldSize = selectedModelSize,
+                label = R.string.label_model_name,
+                onExpandedMenu = { expandedModelsMenu = it },
+                onModelSelected = { selectedModel = it },
+                onFieldSize = { selectedModelSize = it }
+            )
+            DropdownMenu(
+                expanded = expandedModelsMenu,
+                onDismissRequest = { expandedModelsMenu = false },
+                modifier = Modifier
+                    .width(
+                        with(LocalDensity.current) {
+                            selectedModelSize.width.toDp()
+                        }
+                    )
+            ) {
+                models.forEach { model ->
+                    DropdownMenuItem(
+                        text = {
+                            model.name?.also { Text(text = it) }
+                        },
+                        onClick = {
+                            selectedModel = model.name ?: ""
+                            expandedModelsMenu = false
+                            isModelMenuEnabled = true
+                            //TODO remove later below line
+                            Toast.makeText(
+                                context,
+                                "Auto manufacturer's name => ${model.name}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    )
+                }
             }
         }
     }

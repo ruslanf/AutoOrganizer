@@ -1,5 +1,6 @@
 package org.bz.autoorganizer.ui.profile.auto
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -19,37 +20,45 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.toSize
-import org.bz.autoorganizer.R
+import timber.log.Timber
 
 @Composable
 fun AutoModelField(
     isEnabled: Boolean = false,
-    expandedModelsMenu: Boolean = false,
-    selectedModel: String = "",
-    selectedModelSize: Size = Size.Zero
+    expandedMenu: Boolean = false,
+    selectedField: String = "",
+    fieldSize: Size = Size.Zero,
+    @StringRes label: Int,
+    onExpandedMenu: (Boolean) -> Unit,
+    onModelSelected: (String) -> Unit,
+    onFieldSize: (Size) -> Unit
 ) {
-    var modelsMenu by remember(expandedModelsMenu) { mutableStateOf(expandedModelsMenu) }
-    var model by remember(selectedModel) { mutableStateOf(selectedModel) }
-    var modelSize by remember(selectedModelSize) { mutableStateOf(selectedModelSize) }
+    var menu by remember(expandedMenu) { mutableStateOf(expandedMenu) }
+//    var field by remember(selectedField) { mutableStateOf(selectedField) }
+    var modelSize by remember(fieldSize) { mutableStateOf(fieldSize) }
 
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
             .onGloballyPositioned { layoutCoordinates ->
                 modelSize = layoutCoordinates.size.toSize()
+                onFieldSize(modelSize)
             }
             .alpha(if (isEnabled) 1f else 0f),
-        value = selectedModel,
-        onValueChange = { model = it },
+        value = selectedField,
+        onValueChange = onModelSelected,
         label = {
-            Text(stringResource(id = R.string.label_model_name))
+            Text(stringResource(id = label))
         },
         trailingIcon = {
             IconButton(
-                onClick = { modelsMenu = !modelsMenu }
+                onClick = {
+                    menu = !menu
+                    onExpandedMenu.invoke(menu)
+                }
             ) {
                 Icon(
-                    imageVector = if (modelsMenu)
+                    imageVector = if (menu)
                         Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
                     contentDescription = "Auto model"
                 )
