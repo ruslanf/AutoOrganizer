@@ -1,0 +1,9 @@
+Yandex
+AutoOrganizer
+
+ClientID
+bc30d880f63142c49d46311e9cbd2200
+
+Client secret
+3b3c752525e74c4db878184bd88083f5
+
