@@ -43,9 +43,9 @@ class ProfileViewModel(
     private var manufacturers = mutableListOf<String>()
 
     init {
-        viewModelScope.launch {
+        /*viewModelScope.launch {
             launch(Dispatchers.IO) { fetchAutoModels() }
-        }
+        }*/
     }
 
     private suspend fun fetchAutoModels() {

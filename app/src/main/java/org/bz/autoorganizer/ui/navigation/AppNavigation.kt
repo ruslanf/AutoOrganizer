@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.bz.autoorganizer.ui.autostate.AutoStateScreen
+import org.bz.autoorganizer.ui.base.TopBarNavigation
 import org.bz.autoorganizer.ui.profile.ProfileScreen
 import org.bz.autoorganizer.ui.profile.auto.AddNewAutoScreen
 import org.bz.autoorganizer.ui.profile.yandex.YandexOAuthScreen
@@ -22,6 +23,11 @@ fun AppNavigationHost(
         navController = navController,
         startDestination = startDestination.route
     ) {
+        /*composable("") {
+            TopBarNavigation {
+                navController.popBackStack()
+            }
+        }*/
         composable(Screen.AUTO_STATE.route) {
             AutoStateScreen()
         }

@@ -1,8 +1,10 @@
 package org.bz.autoorganizer.ui.profile
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,6 +40,8 @@ import androidx.navigation.NavHostController
 import org.bz.autoorganizer.R
 import org.bz.autoorganizer.root.NavigationTags
 import org.bz.autoorganizer.ui.navigation.Screen
+import org.bz.autoorganizer.ui.profile.yandex.ButtonYandexDialog
+import org.bz.autoorganizer.ui.profile.yandex.YandexOAuthViewModel
 import org.bz.autoorganizer.ui.theme.AutoOrganizerTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -47,60 +51,40 @@ fun ProfileScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
-    val viewModel: ProfileViewModel = koinViewModel()
+    val viewModelProfile = koinViewModel<ProfileViewModel>()
+    val viewModelYandexOAuth = koinViewModel<YandexOAuthViewModel>()
     val scope = rememberCoroutineScope()
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = viewModelYandexOAuth.sdk.contract
+    ) { yandexAuthResult ->
+        viewModelYandexOAuth.handleResult(yandexAuthResult)
+//        result.value = yandexAuthResult
+    }
 
     AutoOrganizerTheme {
         Row(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
-                .testTag(NavigationTags.PROFILE_SCREEN),
+                .testTag(NavigationTags.PROFILE_SCREEN_ROW),
             horizontalArrangement = Arrangement.Center
         ) {
             ButtonOpenAddNewAutoScreen(navController = navController)
 
-            ButtonYandexAuthScreen(navController = navController)
-        }
-        /*ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            val (topText, centerText) = createRefs()
-
-            LoadingIndicator(
-                progress = viewModel.progress,
-                modifier = Modifier
-                    .width(32.dp)
-                    .constrainAs(topText) {
-                        centerHorizontallyTo(parent)
-                        centerVerticallyTo(parent)
-                    }
-            )
-
-            *//**
-             * Select auto manufacturer
-             *//*
             Column(
                 modifier = Modifier
-                    .padding(20.dp)
-                    .constrainAs(topText) {
-                        top.linkTo(
-                            parent.top,
-                            margin = 32.dp
-                        )
-                        start.linkTo(
-                            parent.start,
-                            margin = 32.dp
-                        )
-                        end.linkTo(
-                            parent.end,
-                            margin = 32.dp
-                        )
-                    }
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .testTag(NavigationTags.PROFILE_SCREEN_COLUMN),
+                verticalArrangement = Arrangement.Center
             ) {
-
+                ButtonYandexDialog(
+                    launcher = launcher,
+                    viewModel = viewModelYandexOAuth
+                )
             }
-        }*/
+        }
     }
 }
 
