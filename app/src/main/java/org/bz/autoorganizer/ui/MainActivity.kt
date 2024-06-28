@@ -78,7 +78,7 @@ fun App(navigationItems: List<NavigationItem>) {
     AutoOrganizerTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            topBar = {
+            /*topBar = {
                 TopAppBar(
                     title = {  },
 //                    colors = TopAppBarColors(Color.Black),
@@ -94,7 +94,7 @@ fun App(navigationItems: List<NavigationItem>) {
                         }
                     }
                 )
-            },
+            },*/
             bottomBar = {
                 BottomNavigation(windowInsets = BottomNavigationDefaults.windowInsets) {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()

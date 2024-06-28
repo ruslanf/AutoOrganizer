@@ -35,7 +35,7 @@ fun AppNavigationHost(
             ProfileScreen(navController = navController)
         }
         composable(Screen.ADD_NEW_AUTO.route) {
-            AddNewAutoScreen()
+            AddNewAutoScreen(navController = navController)
         }
         composable(Screen.YANDEX_OAUTH.route) {
             YandexOAuthScreen()

@@ -20,7 +20,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.toSize
+import okhttp3.internal.toHexString
 import timber.log.Timber
+import kotlin.math.exp
 
 @Composable
 fun AutoModelField(
@@ -34,7 +36,6 @@ fun AutoModelField(
     onFieldSize: (Size) -> Unit
 ) {
     var menu by remember(expandedMenu) { mutableStateOf(expandedMenu) }
-//    var field by remember(selectedField) { mutableStateOf(selectedField) }
     var modelSize by remember(fieldSize) { mutableStateOf(fieldSize) }
 
     OutlinedTextField(
